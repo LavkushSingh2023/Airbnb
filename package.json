@@ -1,7 +1,7 @@
 {
   "engines": {
-       " node": "v21.7.3"
-    },
+    "node": "21.7.3"
+},
   "name": "09airbnb",
   "version": "1.0.0",
   "description": "",

@@ -20,7 +20,8 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 
-const dbUrl = process.env.ATLASDB_URL
+const dbUrl = process.env.ATLASDB_URL 
+// const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 
 main()
     .then(() => console.log("Connected to Database"))
@@ -53,7 +54,7 @@ const sessionOptions = {
     store,
     secret: process.env.SECRET,
     resave: false,
-    saveUninitialZied: true,
+    saveUninitialized: true,
     cookie: {
         expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
         maxAge: 7 * 24 * 60 * 60 * 1000,
@@ -87,8 +88,6 @@ app.get("/demouser", async (req, res) => {
     let registeredUser = await User.register(fakeUser, "helloWorld");
     res.send(registeredUser);
 })
-
-// const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 
 app.use("/listings", listingsRouter);
 app.use("/listings/:id/reviews", reviewRouter);
