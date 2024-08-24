@@ -1,4 +1,4 @@
-if(process.env.NODE_ENV != "production"){
+if (process.env.NODE_ENV != "production") {
     require('dotenv').config()
 }
 
@@ -20,7 +20,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 
-const dbUrl = process.env.ATLASDB_URL 
+const dbUrl = process.env.ATLASDB_URL
 // const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 
 main()
@@ -98,6 +98,6 @@ app.use((err, req, res, next) => {
     res.status(500).send(`Something went wrong because of: ${err.message}`);
 });
 
-app.listen(8080, () => {
-    console.log("Server is listening on 8080");
+app.listen(8081, () => {
+    console.log("Server is listening on 8081");
 })
