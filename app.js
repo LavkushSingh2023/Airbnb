@@ -1,5 +1,5 @@
-if (process.env.NODE_ENV != "production") {
-    require('dotenv').config()
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
 }
 
 const express = require("express");
@@ -20,16 +20,18 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 
-const dbUrl = process.env.ATLASDB_URL
-// const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
-
-main()
-    .then(() => console.log("Connected to Database"))
-    .catch((err) => console.log(err))
+const dbUrl = process.env.ATLASDB_URL || 'mongodb://127.0.0.1:27017/wanderlust';  // Use local DB as fallback for development
 
 async function main() {
-    await mongoose.connect(dbUrl);
+    try {
+        await mongoose.connect(dbUrl);
+        console.log("Connected to Database");
+    } catch (err) {
+        console.error("Error connecting to the database:", err);
+    }
 }
+
+main();
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -52,7 +54,7 @@ store.on("error", (err) => {
 
 const sessionOptions = {
     store,
-    secret: process.env.SECRET,
+    secret: process.env.SECRET || 'thisshouldbeabettersecret',  // Use a default secret for development
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -60,7 +62,7 @@ const sessionOptions = {
         maxAge: 7 * 24 * 60 * 60 * 1000,
         httpOnly: true
     }
-}
+};
 
 app.use(session(sessionOptions));
 app.use(flash());
@@ -77,7 +79,7 @@ app.use((req, res, next) => {
     res.locals.error = req.flash("error");
     res.locals.currUser = req.user;
     next();
-})
+});
 
 app.get("/demouser", async (req, res) => {
     let fakeUser = new User({
@@ -87,17 +89,19 @@ app.get("/demouser", async (req, res) => {
 
     let registeredUser = await User.register(fakeUser, "helloWorld");
     res.send(registeredUser);
-})
+});
 
 app.use("/listings", listingsRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
 
 app.use((err, req, res, next) => {
-    console.error('------------Error--------');
+    console.error('------------Error--------', err);
     res.status(500).send(`Something went wrong because of: ${err.message}`);
 });
 
-app.listen(8081, () => {
-    console.log("Server is listening on 8081");
-})
+const port = process.env.PORT || 8081;  // Use environment variable PORT or default to 8081
+
+app.listen(port, () => {
+    console.log(`Server is listening on port ${port}`);
+});
