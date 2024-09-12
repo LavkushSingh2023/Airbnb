@@ -21,7 +21,7 @@ const LocalStrategy = require("passport-local");
 const User = require("./init/models/user.js");
 
 // Database URL from environment variables
-const dbUrl = process.env.ATLASDB_URL || 'mongodb://127.0.0.1:27017/airbnb'; // Use local DB as fallback for development
+const dbUrl = process.env.ATLASDB_URL; // Use local DB as fallback for development
 
 async function main() {
     try {
