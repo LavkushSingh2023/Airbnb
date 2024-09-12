@@ -1,16 +1,21 @@
 const mongoose = require("mongoose");
 const initData = require("./data.js");
 const Listing = require("./models/listing.js");
+require('dotenv').config();
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
-//const dbUrl = process.env.ATLASDB_URL;  // Use local DB as fallback for development
+console.log("Database URL from .env file:", process.env.ATLASDB_URL);
+
+
+
+//const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
+const dbURL = process.env.ATLASDB_URL;  // Use local DB as fallback for development  // of shradha
 
 main()
     .then(() => console.log("Connected to Database"))
     .catch((err) => console.log(err))
 
 async function main() {
-    await mongoose.connect(MONGO_URL);
+    await mongoose.connect(dbURL);
 }
 
 const initDB = async () => {
@@ -25,3 +30,4 @@ const initDB = async () => {
 }
 
 initDB()
+
