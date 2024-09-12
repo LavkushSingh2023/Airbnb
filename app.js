@@ -20,7 +20,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./init/models/user.js");
 
-const dbUrl = process.env.ATLASDB_URL || 'mongodb://127.0.0.1:27017/wanderlust';  // Use local DB as fallback for development
+const dbUrl = 'mongodb://127.0.0.1:27017/wanderlust';  // process.env.ATLASDB_URL || Use local DB as fallback for development
 
 async function main() {
     try {
