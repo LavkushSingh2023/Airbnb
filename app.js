@@ -18,7 +18,7 @@ const userRouter = require("./routes/user.js");
 
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
-const User = require("./models/user.js");
+const User = require("./init/models/user.js");
 
 const dbUrl = process.env.ATLASDB_URL || 'mongodb://127.0.0.1:27017/wanderlust';  // Use local DB as fallback for development
 
@@ -91,6 +91,7 @@ app.get("/demouser", async (req, res) => {
     res.send(registeredUser);
 });
 
+app.use("/", listingsRouter);
 app.use("/listings", listingsRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
@@ -100,7 +101,7 @@ app.use((err, req, res, next) => {
     res.status(500).send(`Something went wrong because of: ${err.message}`);
 });
 
-const port = process.env.PORT || 8081;  // Use environment variable PORT or default to 8081
+const port = process.env.PORT || 8080;  // Use environment variable PORT or default to 8081
 
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
