@@ -5,8 +5,6 @@ require('dotenv').config();
 
 console.log("Database URL from .env file:", process.env.ATLASDB_URL);
 
-
-
 //const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 const dbURL = process.env.ATLASDB_URL;  // Use local DB as fallback for development  // of shradha
 

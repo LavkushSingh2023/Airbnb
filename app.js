@@ -20,11 +20,12 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./init/models/user.js");
 
-//const dbUrl = 'mongodb://127.0.0.1:27017/wanderlust';  // process.env.ATLASDB_URL || Use local DB as fallback for development
-const dbUrl =   process.env.ATLASDB_URL
+// Database URL from environment variables
+const dbUrl = process.env.ATLASDB_URL || 'mongodb://127.0.0.1:27017/airbnb'; // Use local DB as fallback for development
+
 async function main() {
     try {
-        await mongoose.connect(dbUrl);
+        await mongoose.connect(dbUrl, { serverSelectionTimeoutMS: 30000 });
         console.log("Connected to Database");
     } catch (err) {
         console.error("Error connecting to the database:", err);
@@ -38,12 +39,12 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
-app.use(express.static(path.join(__dirname, "/public")));
+app.use(express.static(path.join(__dirname, "public")));
 
 const store = MongoStore.create({
     mongoUrl: dbUrl,
     crypto: {
-        secret: process.env.SECRET
+        secret: process.env.SECRET || 'defaultSecret'
     },
     touchAfter: 24 * 3600,
 });
@@ -101,7 +102,7 @@ app.use((err, req, res, next) => {
     res.status(500).send(`Something went wrong because of: ${err.message}`);
 });
 
-const port = process.env.PORT || 8080;  // Use environment variable PORT or default to 8081
+const port = process.env.PORT || 8080;  // Use environment variable PORT or default to 8080
 
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
