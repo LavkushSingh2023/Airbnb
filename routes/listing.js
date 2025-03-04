@@ -25,4 +25,7 @@ router.route("/edit/:id")
 // Delete route
 router.delete("/delete/:id", isLoggedIn, isOwner, listingController.deleteListing);
 
+// Search route
+router.get("/search", listingController.searchListingByName)
+
 module.exports = router;

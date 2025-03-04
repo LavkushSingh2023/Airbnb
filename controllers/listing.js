@@ -73,3 +73,13 @@ module.exports.deleteListing = async (req, res) => {
     req.flash("success", "Listing deleted!");
     res.redirect("/listings")
 };
+
+module.exports.searchListingByName = async (req, res) => {
+    const { query } = req.query;
+    const listing = await Listing.findOne({ title: { $regex: query, $options: 'i' } });
+    if (listing) {
+        res.json({ id: listing._id });
+    } else {
+        res.json({});
+    }
+}
